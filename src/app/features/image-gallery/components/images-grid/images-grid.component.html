@@ -1,0 +1,11 @@
+
+
+<div class="image-list">
+  <div class="image-container" *ngFor="let image of images" >
+      <img class="image" [src]="image.url" alt="image" >
+      <div class="select-image">
+  </div>
+</div>
+
+
+<button mat-raised-button color="primary" class="applyBtn" (click)="loadMore()">Load more</button>
