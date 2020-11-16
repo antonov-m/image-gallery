@@ -1,11 +1,15 @@
+<div id="gridView" style="text-align: center;">
 
+  <mat-grid-list #grid [cols]="colsNumber" gutterSize="10px" rowHeight="150px">
+    <mat-grid-tile *ngFor="let image of images; let i = index">
+      <img [src]="image.url" (click)="openImage(i)">
+    </mat-grid-tile>
+  </mat-grid-list>
 
-<div class="image-list">
-  <div class="image-container" *ngFor="let image of images" >
-      <img class="image" [src]="image.url" alt="image" >
-      <div class="select-image">
+  <div style="padding: 20px 0 20px 0;">
+    <button mat-flat-button color="primary" (click)="loadMore()">Load more</button>
   </div>
+
 </div>
 
 
-<button mat-raised-button color="primary" class="applyBtn" (click)="loadMore()">Load more</button>

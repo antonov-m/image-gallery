@@ -1,1 +1,15 @@
-<p>images-view works!</p>
+<button style="position:absolute; left: 10px; top: 50%;" mat-fab color="accent"
+  (click)="goToPreviousImage()">&#60;</button>
+
+<img *ngIf="image" [src]="image.url">
+
+<button style="position:absolute; right: 10px; top: 50%;" mat-fab color="accent"
+  (click)="goToNextImage()">&#62;</button>
+
+<button style="position:absolute; right: 10px; top: 5%;" mat-fab color="accent" (click)="closeImage()">x</button>
+
+<div style="background-color: rgb(64, 94, 65);" *ngIf="image">
+  <div>{{image.author.name}}</div>
+  <div>camera - {{image.camera.model}}</div>
+  <span *ngFor="let tag of hashtags">{{tag}} </span>
+</div>

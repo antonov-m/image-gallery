@@ -1,23 +1,6 @@
-.header{
-  width: 100%;
-}
-.project-title{
-  padding-left: 20px;
-}
-.image-list{
-  display: flex;
-  flex-wrap: wrap;
+.btn-container{
 
-  .image-container{
-      padding: 20px;
-      .image{
-          height: 120px;
-          width: 160px;
-          border: 1px solid #b1afaf;
-      }
-      .select-image{
-          display: flex;
-          justify-content: space-between;
-      }
-  }
+  padding: 20px 10% 20px 10%;
+  font-size: 20px;
 }
+

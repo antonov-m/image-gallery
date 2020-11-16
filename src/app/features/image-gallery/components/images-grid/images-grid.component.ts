@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ImagesService } from '../../services/images.service';
 import { Image } from '../../services/images.types';
+import { Router } from '@angular/router';
+import { MatGridList } from '@angular/material/grid-list';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-images-grid',
@@ -8,18 +12,28 @@ import { Image } from '../../services/images.types';
   styleUrls: ['./images-grid.component.scss']
 })
 export class ImagesGridComponent implements OnInit {
-  imgData: any;
   isLoading: boolean = true;
   isLoadingMore: boolean = false;
   images: Image[] = [];
+  colsNumber: number = 5;
 
-  constructor(private imagesService: ImagesService) { }
+  @ViewChild('grid', { static: true }) grid: MatGridList | undefined;
+  cols: Subject<any> = new Subject();
+
+  constructor(
+    private imagesService: ImagesService,
+    private router: Router,
+    private observableMedia: MediaObserver,
+  ) { }
 
   ngOnInit(): void {
     this.imagesService.imagesObservable.subscribe(images => {
       this.images = images;
+      this.resetColsNumber();
     })
     this.imagesService.getImages().subscribe(() => this.isLoading = false);
+    window.addEventListener("resize", this.resetColsNumber);
+    document.body.style.backgroundColor = '#ffffff';
   }
 
   loadMore() {
@@ -27,11 +41,17 @@ export class ImagesGridComponent implements OnInit {
     this.imagesService.getNextPageImages().subscribe(() => this.isLoadingMore = false);
   }
 
-  ngOnDestroy() {
-    console.log(this.images);
+  resetColsNumber() {
+    let grid = document.getElementById("gridView");
+    if (grid && grid.clientWidth) {
+      this.colsNumber = Math.floor(grid.clientWidth / 250);
+      return;
+    }
+    this.colsNumber = 5;
   }
 
-  openImage(img:string) {
-
+  openImage(index: any) {
+    this.imagesService.currentIndex = index;
+    this.router.navigate([`/images/${this.images[index].id}`]);
   }
 }

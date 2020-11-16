@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button'
+import { MatGridListModule } from '@angular/material/grid-list'
+
 import { ImagesGridComponent } from './features/image-gallery/components/images-grid/images-grid.component';
 import { ImagesViewComponent } from './features/image-gallery/components/images-view/images-view.component';
 
@@ -27,7 +30,9 @@ const routes: Routes = [
     BrowserAnimationsModule,
     BrowserModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
