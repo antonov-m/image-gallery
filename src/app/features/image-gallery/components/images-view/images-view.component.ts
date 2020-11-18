@@ -24,14 +24,14 @@ export class ImagesViewComponent implements OnInit {
     this.isLoadingImage = true;
     document.body.style.backgroundColor = '#000000';
     this.imageService.imageDetailsObservable.subscribe(image => {
-      if (!image) {
-        // this.closeImage();
-        return;
-      }
+      if (!image) return;
       this.isLoadingImage = false;
       this.image = image;
       this.hashtags = image.tags.split(' ')
     });
+    if (this.imageService.currentIndex === -1) {
+      this.closeImage();
+    }
   }
 
   closeImage() {

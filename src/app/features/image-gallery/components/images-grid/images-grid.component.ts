@@ -37,9 +37,9 @@ export class ImagesGridComponent implements OnInit {
 
   openImage(id: string, index: number) {
     this.imagesService.getImageDetails(id).subscribe(() => {
-      this.imagesService.currentIndex = index;
+      this.router.navigate([`/images/${this.images[index].id}`]);
     })
+    this.imagesService.currentIndex = index;
 
-    this.router.navigate([`/images/${this.images[index].id}`]);
   }
 }
