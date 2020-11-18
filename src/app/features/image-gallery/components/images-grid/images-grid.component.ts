@@ -20,7 +20,6 @@ export class ImagesGridComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    document.body.style.backgroundColor = '#ffffff';
     this.imagesService.imagePreviewsObservable.subscribe(images => {
       this.images = images;
     })

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-images-view',
   templateUrl: './images-view.component.html',
-  styleUrls: ['./images-view.component.scss']
+  styleUrls: ['./images-view.component.scss'],
 })
 export class ImagesViewComponent implements OnInit {
 
@@ -22,7 +22,6 @@ export class ImagesViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoadingImage = true;
-    document.body.style.backgroundColor = '#000000';
     this.imageService.imageDetailsObservable.subscribe(image => {
       if (!image) return;
       this.isLoadingImage = false;
