@@ -1,7 +1,15 @@
 <button style="position:absolute; left: 10px; top: 50%;" mat-fab color="accent"
   (click)="goToPreviousImage()">&#60;</button>
 
-<img *ngIf="image" [src]="image.url">
+<img *ngIf="image && !isLoadingImage" [src]="image.fullPicture">
+
+<mat-progress-spinner *ngIf="isLoadingImage"  mode="indeterminate" color="accent"
+style="position: absolute;
+top: 0;
+bottom: 0;
+margin: auto;
+left: 0;
+right: 0;">Loadidng image...</mat-progress-spinner>
 
 <button style="position:absolute; right: 10px; top: 50%;" mat-fab color="accent"
   (click)="goToNextImage()">&#62;</button>
@@ -9,7 +17,7 @@
 <button style="position:absolute; right: 10px; top: 5%;" mat-fab color="accent" (click)="closeImage()">x</button>
 
 <div style="background-color: rgb(64, 94, 65);" *ngIf="image">
-  <div>{{image.author.name}}</div>
-  <div>camera - {{image.camera.model}}</div>
+  <div>{{image.author}}</div>
+  <div>camera - {{image.camera}}</div>
   <span *ngFor="let tag of hashtags">{{tag}} </span>
 </div>

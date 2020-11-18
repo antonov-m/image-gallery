@@ -4,9 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://interview.agileengine.com',
-  // apiUrl: 'http://192.168.31.127:3000',
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'http://interview.agileengine.com',
+  // apiUrl: 'http://localhost:3000',
 
   apiKey: '23567b218376f79d9415'
 };

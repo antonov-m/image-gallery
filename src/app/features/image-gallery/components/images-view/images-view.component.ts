@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ImagesService } from '../../services/images.service';
-import { Image } from '../../services/images.types';
+import { ImageDetails } from '../../services/images.types';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class ImagesViewComponent implements OnInit {
 
-  image: Image | null = null;
+  image: ImageDetails | null = null;
+
   hashtags: string[] = [];
+  isLoadingImage: boolean = true;
 
   constructor(
     private imageService: ImagesService,
@@ -19,47 +21,43 @@ export class ImagesViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.image = this.imageService.currentImage;
-    if (!this.image) {
-      this.closeImage();
-    } else {
-      this.createHashtags(this.image);
-      document.body.style.backgroundColor = '#000000';
-      document.body.style.backgroundImage = this.image.url;
-    }
+    this.isLoadingImage = true;
+    document.body.style.backgroundColor = '#000000';
+    this.imageService.imageDetailsObservable.subscribe(image => {
+      if (!image) {
+        // this.closeImage();
+        return;
+      }
+      this.isLoadingImage = false;
+      this.image = image;
+      this.hashtags = image.tags.split(' ')
+    });
   }
 
   closeImage() {
+    this.image = null;
+
     this.router.navigate([`/images`]);
   }
 
   goToNextImage() {
     this.imageService.currentIndex++;
-    this.image = this.imageService.currentImage;
-    if (this.image) {
-      this.router.navigate([`/images/${this.image.id}`]);
-    }
+    this.goToImage(this.imageService.currentIndex);
+  }
+
+  goToImage(index: number) {
+    this.image = null;
+    if (!this.imageService.currentImage) return;
+    this.isLoadingImage = true;
+    this.imageService.getImageDetails(this.imageService.currentImage.id).subscribe((data) => {
+      this.imageService.currentIndex = index;
+      this.isLoadingImage = false;
+      this.router.navigate([`/images/${data.id}`]);
+    })
   }
 
   goToPreviousImage() {
     this.imageService.currentIndex--;
-    this.image = this.imageService.currentImage;
-    if (this.image) {
-      this.router.navigate([`/images/${this.image.id}`]);
-    }
+    this.goToImage(this.imageService.currentIndex);
   }
-
-  createHashtags(image: Image | null) {
-    if (image) {
-      this.hashtags = image.hashtags.map(tag => {
-        let words = tag.split(" ");
-        let hTag = "";
-        for (let word of words) {
-          hTag += (hTag === "" ? "#" : "_") + word;
-        }
-        return hTag;
-      })
-    }
-  }
-
 }

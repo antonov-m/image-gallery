@@ -3,10 +3,10 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, take, switchMap, map, tap } from 'rxjs/operators';
 import { TokenManagerService } from '../services/token-manager.service';
 
 @Injectable()
@@ -21,20 +21,21 @@ export class TokenInterceptor implements HttpInterceptor {
       request = this.injectToken(request, token);
     }
 
-    return next.handle(request).pipe(catchError(error => {
-      if (error.status === 401) {
-        this.tokenManager.refreshToken().subscribe(newToken => {
+    return next.handle(request).pipe(catchError((err: HttpErrorResponse) => {
+      if (err.status === 401) {
+        return this.tokenManager.refreshToken().pipe(tap(() => {
+          const newToken = this.tokenManager.getToken() || '';
           request = this.injectToken(request, newToken);
-          return next.handle(request);
-        })
+          return next.handle(request)
+        }))
+      } else {
+        return throwError(err);
       }
-      return throwError(error)
-    })
-    )
+    })) as Observable<HttpEvent<any>>
   }
 
   injectToken(request: HttpRequest<unknown>, token: string) {
-    return request = request.clone({
+    return request.clone({
       setHeaders: {
         'Authorization': `Bearer ${token}`
       }

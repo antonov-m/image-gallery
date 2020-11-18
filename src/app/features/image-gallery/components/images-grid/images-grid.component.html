@@ -1,14 +1,16 @@
 <div id="gridView" style="text-align: center;">
 
-  <mat-grid-list #grid [cols]="colsNumber" gutterSize="10px" rowHeight="150px">
+  <mat-grid-list #grid [cols]="3" gutterSize="10px" rowHeight="150px">
     <mat-grid-tile *ngFor="let image of images; let i = index">
-      <img [src]="image.url" (click)="openImage(i)">
+      <img [src]="image.croppedPicture" (click)="openImage(image.id, i)">
     </mat-grid-tile>
   </mat-grid-list>
 
-  <div style="padding: 20px 0 20px 0;">
+  <div style="padding: 20px 0 20px 0;" *ngIf="hasMore && !isLoadingMore">
     <button mat-flat-button color="primary" (click)="loadMore()">Load more</button>
   </div>
+
+  <div style="padding: 20px 0 20px 0;" *ngIf="isLoadingMore">Loading More...</div>
 
 </div>
 

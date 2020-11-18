@@ -1,13 +1,34 @@
-export interface Image {
-  id: number;
-  url: string;
-  author: {
-      name: string;
-  }
-  camera: {
-      model: string;
-  }
-  hashtags: string[];
+export interface ImagePreview {
+  id: string;
+  croppedPicture: string;
 }
 
-export type GetImagesResponseData = Image[]
+export interface ImagePreviewResponse {
+  id: string;
+  cropped_picture: string;
+}
+
+export interface GetImagesResponseData {
+  hasMore: boolean;
+  page: number;
+  pageCount: number;
+  pictures:ImagePreviewResponse[]
+}
+
+export interface GetImageDetailsResponseData {
+  author: string;
+  camera: string;
+  cropped_picture: string;
+  full_picture: string;
+  id: string;
+  tags: string;
+}
+
+export interface ImageDetails {
+  author: string;
+  camera: string;
+  croppedPicture: string;
+  fullPicture: string;
+  id: string;
+  tags: string;
+}
